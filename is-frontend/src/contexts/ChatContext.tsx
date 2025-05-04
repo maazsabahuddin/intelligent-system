@@ -14,6 +14,7 @@ interface ChatContextType {
   isLoading: boolean;
   error: string | null;
   clearChat: () => void;
+  clearError: () => void;
 }
 
 const ChatContext = createContext<ChatContextType>({
@@ -22,6 +23,7 @@ const ChatContext = createContext<ChatContextType>({
   isLoading: false,
   error: null,
   clearChat: () => {},
+  clearError: () => {},
 });
 
 export const useChat = () => useContext(ChatContext);
@@ -47,7 +49,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         setMessages(formattedMessages);
       } catch (err) {
         console.error('Failed to parse chat history:', err);
-        // Initialize with welcome message if parsing fails
         initializeChat();
       }
     } else {
@@ -108,8 +109,12 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     localStorage.setItem('chatHistory', JSON.stringify([messages[0]]));
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   return (
-    <ChatContext.Provider value={{ messages, sendMessage, isLoading, error, clearChat }}>
+    <ChatContext.Provider value={{ messages, sendMessage, isLoading, error, clearChat, clearError }}>
       {children}
     </ChatContext.Provider>
   );
