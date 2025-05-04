@@ -1,18 +1,32 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import openai
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
 
 # Load environment variables
 load_dotenv()
 
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
 app = Flask(__name__)
 CORS(app)
 
-# Configure OpenAI client (New SDK)
-client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Get environment variables with defaults
+PORT = int(os.getenv('PORT', 5000))
+ENV = os.getenv('FLASK_ENV', 'production')
+DEBUG = ENV == 'development'
 
+
+@app.route('/server-configuration', methods=['GET'])
+def server_configuration():
+    return jsonify({
+        'debug': DEBUG,
+        'port': PORT,
+        'env': ENV
+    })
+        
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -48,6 +62,17 @@ def chat():
         print(f"Error: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({'error': 'Not found'}), 404
+
+@app.errorhandler(500)
+def server_error(e):
+    return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+        host='0.0.0.0',
+        port=PORT,
+        debug=DEBUG
+    )
