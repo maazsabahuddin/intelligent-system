@@ -13,7 +13,6 @@ const LoginPage: React.FC = () => {
   const { login, isAuthenticated, error } = useAuth();
   const navigate = useNavigate();
   
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/chat');
@@ -37,6 +36,8 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     
     try {
+      // Simulate loading for 2 seconds
+      await new Promise(resolve => setTimeout(resolve, 2000));
       const success = await login(username, password);
       if (success) {
         navigate('/chat');
@@ -144,11 +145,6 @@ const LoginPage: React.FC = () => {
               </button>
             </div>
           </form>
-          
-          <div className="mt-6 text-center text-sm text-neutral-500">
-            <p>Demo credentials:</p>
-            <p className="font-medium text-primary-600">Username: maaz | Password: helloworld</p>
-          </div>
         </div>
       </div>
     </div>
