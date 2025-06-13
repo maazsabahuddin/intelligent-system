@@ -41,6 +41,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsAuthenticated(true);
         localStorage.setItem('isAuthenticated', 'true');
         return true;
+      } 
+      else if (username === 'katie' && password === 'helloworld') {
+        setIsAuthenticated(true);
+        localStorage.setItem('isAuthenticated', 'true');
+        return true;
       } else {
         setError('Invalid username or password');
         return false;
