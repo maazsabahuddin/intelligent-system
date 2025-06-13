@@ -48,7 +48,7 @@ const ChatPage: React.FC = () => {
               {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
             <h1 className="text-lg font-semibold text-neutral-800">
-              Intelligent-System 4o
+              AI for your business
             </h1>
           </div>
           
