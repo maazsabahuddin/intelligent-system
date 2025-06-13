@@ -14,20 +14,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     clearChat();
   };
 
-  // Mock chat history - in a real app, this would come from context/state
-  const chatHistory = [
-    "Healthcare symptoms analysis",
-    "Medication interaction check", 
-    "Diet recommendations for diabetes",
-    "Exercise plan for recovery",
-    "Mental health support",
-    "Preventive care guidelines",
-    "Emergency first aid steps",
-    "Chronic pain management",
-    "Sleep disorder consultation",
-    "Nutrition planning advice"
-  ];
-
   const menuItems = [
     { icon: MessageSquare, label: 'New chat', action: handleNewChat },
     { icon: Search, label: 'Search chats' },
@@ -76,19 +62,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             >
               <item.icon className="h-4 w-4" />
               <span className="text-sm">{item.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Chat History */}
-        <div className="flex-1 overflow-y-auto px-4 py-2">
-          <div className="text-xs font-medium text-neutral-400 mb-2 px-3">Chats</div>
-          {chatHistory.map((chat, index) => (
-            <button
-              key={index}
-              className="w-full text-left px-3 py-2 rounded-lg hover:bg-neutral-800 transition-colors mb-1"
-            >
-              <div className="text-sm text-neutral-200 truncate">{chat}</div>
             </button>
           ))}
         </div>

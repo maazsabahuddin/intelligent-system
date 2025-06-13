@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-primary-800 mb-2">Intelligent-System</h1>
-          <p className="text-neutral-600">Your Healthcare Assistant</p>
+          <p className="text-neutral-600">Your Sales & Marketing Assistant</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-lg p-8">
