@@ -32,12 +32,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         w-64 flex flex-col
       `}>
 
-        {/* Bottom Section */}
-        <div className="p-4 border-t border-neutral-700">
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-neutral-800 transition-colors text-left mt-1">
-            <User className="h-4 w-4" />
-            <span className="text-sm">Profile</span>
-          </button>
+        {/* Bottom Section - Profile and Branding */}
+        <div className="border-t border-neutral-700">
+          {/* Profile Button */}
+          <div className="p-4">
+            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-neutral-800 transition-colors text-left">
+              <User className="h-4 w-4" />
+              <span className="text-sm">Knowledge Base</span>
+            </button>
+            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-neutral-800 transition-colors text-left">
+              <User className="h-4 w-4" />
+              <span className="text-sm">Profile</span>
+            </button>
+          </div>
+          
+          {/* Branding */}
+          <div className="px-4 pb-4">
+            <div className="text-center py-3 border-t border-neutral-800">
+              <div className="text-xs text-neutral-500 mb-1">Powered by</div>
+              <div className="text-sm font-medium text-neutral-300">Katie Potter</div>
+            </div>
+          </div>
         </div>
       </div>
     </>
