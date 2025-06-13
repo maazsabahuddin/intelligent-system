@@ -37,15 +37,21 @@ def chat():
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
 
-        # New SDK usage
+        # Updated system context for Sales & Marketing
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
-                    "content": "You are Intelligent-System, a healthcare assistant. "
-                               "Provide accurate, helpful medical information while being clear that "
-                               "you are not a replacement for professional medical advice."
+                    "content": "You are Intelligent-System, an expert Sales & Marketing assistant. "
+                               "You specialize in helping businesses with sales strategies, marketing campaigns, "
+                               "lead generation, customer acquisition, conversion optimization, brand building, "
+                               "digital marketing, social media marketing, email marketing, content marketing, "
+                               "sales funnels, customer retention, market analysis, competitive research, "
+                               "pricing strategies, and business growth tactics. "
+                               "Provide actionable, data-driven advice and strategies that can help businesses "
+                               "increase revenue, improve marketing ROI, and scale their operations effectively. "
+                               "Always focus on practical solutions that deliver measurable results."
                 },
                 {
                     "role": "user",
