@@ -1,18 +1,21 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Activity, LogOut, Trash2 } from 'lucide-react';
+import { Menu, X, LogOut, Maximize2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useChat } from '../contexts/ChatContext';
+import Sidebar from '../components/Sidebar';
 import ChatInput from '../components/ChatInput';
 import ChatMessage from '../components/ChatMessage';
+import WelcomeScreen from '../components/WelcomeScreen';
 import TypingIndicator from '../components/TypingIndicator';
 import ErrorModal from '../components/ErrorModal';
 
 const ChatPage: React.FC = () => {
   const { logout } = useAuth();
-  const { messages, isLoading, error, clearChat, clearError } = useChat();
+  const { messages, isLoading, error, clearError } = useChat();
   const navigate = useNavigate();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const handleLogout = () => {
     logout();
@@ -22,57 +25,87 @@ const ChatPage: React.FC = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Check if we should show welcome screen (only initial bot message)
+  const showWelcomeScreen = messages.length <= 1;
   
   return (
-    <div className="h-screen flex flex-col bg-neutral-50">
+    <div className="h-screen flex bg-white">
       {error && <ErrorModal message={error} onClose={clearError} />}
       
-      <header className="bg-white border-b border-neutral-200 py-3 px-4 sm:px-6">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="bg-primary-500 text-white p-1.5 rounded-full mr-3">
-              <Activity className="h-5 w-5" />
-            </div>
-            <h1 className="text-xl font-semibold text-primary-800">Intelligent-System</h1>
-          </div>
-          <div className="flex items-center space-x-2">
-            <button 
-              onClick={clearChat}
-              className="p-2 text-neutral-500 hover:text-error-600 hover:bg-neutral-100 rounded-full transition-colors"
-              title="Clear chat history"
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:ml-0">
+        {/* Header */}
+        <header className="flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors lg:hidden"
             >
-              <Trash2 className="h-5 w-5" />
+              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+            <h1 className="text-lg font-semibold text-neutral-800">
+              Intelligent-System 4o
+            </h1>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button className="p-2 hover:bg-neutral-100 rounded-lg transition-colors">
+              <Maximize2 className="h-4 w-4 text-neutral-600" />
             </button>
             <button 
               onClick={handleLogout}
-              className="p-2 text-neutral-500 hover:text-primary-600 hover:bg-neutral-100 rounded-full transition-colors ml-2"
+              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
               title="Sign out"
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className="h-4 w-4 text-neutral-600" />
             </button>
           </div>
-        </div>
-      </header>
-      
-      <div className="flex-1 overflow-hidden flex flex-col">
-        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
-          ))}
-          
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-white rounded-lg shadow-message px-4 py-3 max-w-[80%]">
-                <TypingIndicator />
-              </div>
+        </header>
+        
+        {/* Chat Area */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {showWelcomeScreen ? (
+            <WelcomeScreen />
+          ) : (
+            <div className="flex-1 overflow-y-auto">
+              {messages.slice(1).map((message) => (
+                <ChatMessage key={message.id} message={message} />
+              ))}
+              
+              {isLoading && (
+                <div className="bg-white">
+                  <div className="max-w-4xl mx-auto px-4 py-6">
+                    <div className="flex gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-neutral-800 text-white flex items-center justify-center">
+                          <TypingIndicator />
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-neutral-900 mb-1">
+                          Intelligent-System
+                        </div>
+                        <div className="flex items-center">
+                          <TypingIndicator />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div ref={messagesEndRef} />
             </div>
           )}
           
-          <div ref={messagesEndRef} />
-        </div>
-        
-        <div className="border-t border-neutral-200 bg-white p-4">
-          <ChatInput />
+          {/* Input Area */}
+          <div className="border-t border-neutral-200 bg-white">
+            <ChatInput />
+          </div>
         </div>
       </div>
     </div>

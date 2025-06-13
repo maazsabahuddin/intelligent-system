@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Plus, Paperclip, Mic } from 'lucide-react';
 import { useChat } from '../contexts/ChatContext';
 
 const ChatInput: React.FC = () => {
@@ -15,35 +15,72 @@ const ChatInput: React.FC = () => {
   };
   
   return (
-    <form onSubmit={handleSubmit} className="flex items-end">
-      <div className="flex-1 relative">
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message here..."
-          className="w-full p-4 pr-12 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-          rows={2}
-          disabled={isLoading}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSubmit(e);
-            }
-          }}
-        />
-        <button
-          type="submit"
-          disabled={!message.trim() || isLoading}
-          className={`absolute right-3 bottom-3 p-2 rounded-full ${
-            message.trim() && !isLoading
-              ? 'bg-primary-500 text-white hover:bg-primary-600'
-              : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
-          } transition-colors`}
-        >
-          <Send className="h-5 w-5" />
-        </button>
-      </div>
-    </form>
+    <div className="max-w-4xl mx-auto px-4 pb-6">
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="flex items-end bg-white border border-neutral-300 rounded-2xl shadow-sm focus-within:border-neutral-400 focus-within:shadow-md transition-all">
+          <button
+            type="button"
+            className="p-3 text-neutral-400 hover:text-neutral-600 transition-colors"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
+          
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Ask anything"
+            className="flex-1 px-2 py-3 bg-transparent border-none outline-none resize-none text-neutral-800 placeholder-neutral-500"
+            rows={1}
+            disabled={isLoading}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+            style={{
+              minHeight: '24px',
+              maxHeight: '200px',
+            }}
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement;
+              target.style.height = 'auto';
+              target.style.height = target.scrollHeight + 'px';
+            }}
+          />
+          
+          <div className="flex items-center gap-1 pr-2">
+            <button
+              type="button"
+              className="p-2 text-neutral-400 hover:text-neutral-600 transition-colors"
+            >
+              <Paperclip className="h-4 w-4" />
+            </button>
+            
+            {message.trim() ? (
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="p-2 bg-neutral-800 text-white rounded-full hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="p-2 text-neutral-400 hover:text-neutral-600 transition-colors"
+              >
+                <Mic className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+        
+        <div className="text-xs text-neutral-500 text-center mt-2">
+          Intelligent-System can make mistakes. Check important info.
+        </div>
+      </form>
+    </div>
   );
 };
 
