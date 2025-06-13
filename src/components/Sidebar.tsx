@@ -1,5 +1,6 @@
 import React from 'react';
 import { Settings, User, FileText, Upload, Trash2 } from 'lucide-react';
+import KnowledgeBaseModal from './KnowledgeBaseModal';
 
 interface Document {
   id: string;
@@ -15,6 +16,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
   const [documents, setDocuments] = React.useState<Document[]>([]);
+  const [isKnowledgeBaseOpen, setIsKnowledgeBaseOpen] = React.useState(false);
 
   // Load documents from localStorage on component mount
   React.useEffect(() => {
@@ -111,7 +113,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         {/* Knowledge Base Section */}
         <div className="flex-1 overflow-y-auto px-4 py-4">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm font-medium text-neutral-300">Knowledge Base</div>
+            <button
+              onClick={() => setIsKnowledgeBaseOpen(true)}
+              className="text-sm font-medium text-neutral-300 hover:text-white transition-colors"
+            >
+              Knowledge Base
+            </button>
             <label className="cursor-pointer">
               <input
                 type="file"
@@ -130,22 +137,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             <div className="text-center py-8">
               <FileText className="h-8 w-8 text-neutral-600 mx-auto mb-2" />
               <div className="text-sm text-neutral-400 mb-2">No documents uploaded</div>
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  multiple
-                  accept=".pdf,.doc,.docx,.txt,.md"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <div className="text-xs text-primary-400 hover:text-primary-300 transition-colors">
-                  Upload your first document
-                </div>
-              </label>
+              <button
+                onClick={() => setIsKnowledgeBaseOpen(true)}
+                className="text-xs text-primary-400 hover:text-primary-300 transition-colors"
+              >
+                Open Knowledge Base
+              </button>
             </div>
           ) : (
             <div className="space-y-2">
-              {documents.map((doc) => (
+              {documents.slice(0, 5).map((doc) => (
                 <div
                   key={doc.id}
                   className="group flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-neutral-800 transition-colors"
@@ -165,6 +166,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                   </button>
                 </div>
               ))}
+              {documents.length > 5 && (
+                <button
+                  onClick={() => setIsKnowledgeBaseOpen(true)}
+                  className="w-full text-xs text-primary-400 hover:text-primary-300 transition-colors py-2"
+                >
+                  View all {documents.length} documents
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -188,6 +197,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
           </div>
         </div>
       </div>
+
+      {/* Knowledge Base Modal */}
+      <KnowledgeBaseModal
+        isOpen={isKnowledgeBaseOpen}
+        onClose={() => setIsKnowledgeBaseOpen(false)}
+      />
     </>
   );
 };
