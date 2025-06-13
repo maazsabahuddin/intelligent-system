@@ -59,7 +59,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const initializeChat = () => {
     const welcomeMessage: Message = {
       id: Date.now().toString(),
-      content: "Hello! I'm Intelligent-System, your healthcare assistant. How can I help you today?",
+      content: "Hello! I'm Intelligent-System, your Sales & Marketing assistant. How can I help you today?",
       sender: 'bot',
       timestamp: new Date(),
     };
