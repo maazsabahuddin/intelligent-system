@@ -171,9 +171,7 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-**MAAZ SABAH UDDIN**
-- Expert in AI/ML and Full-Stack Development
-- Specialized in modern web technologies and AI integration
+**MAAZ SABAH UDDIN** C/O **KATTIE POTTER**
 
 ## 🆘 Support
 
